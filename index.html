@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="icon" href="favicon_v2.png" type="image/png">
+  <meta charset="UTF-8">
+  <title>🙂Human Generator🙃</title>
+  <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+</head>
+
+<body>
+  <section id="generator">
+    <div class="container">
+      <aside class="prompt-area">
+        <div class="top-controls">
+          <button id="generateBtn">Generate</button>
+          <div id="progressContainer" class="progress-container">
+　　　　　　<div class="progress-wrapper">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+　　　　　　<div id="progressText" class="progress-text">0%</div>
+        </div>
+          <div class="prompt-block">
+           <span class="prompt-label">Prompt</span>
+            <input id="promptinput" type="text" value="HUMAN" readonly />
+         </div>
+
+            </aside>
+
+      <main class="preview-area" id="preview">
+      </main>
+    </div>
+  </section>
+
+  <div id="modal" class="modal">
+    <span id="closeModal">&times;</span>
+    <img id="modalImage" src="" />
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffe6ff;
+  font-family: monospace;
+  color: white;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  padding: 2vh 4vw;
+  box-sizing: border-box;
+}
+
+.prompt-area {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* ← 下寄せに変更！ */
+  padding: 2vh 2vw;
+  box-sizing: border-box;
+}
+#generateBtn {
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #eeddff, #d6ffe6);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #5cff9a;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #000;
+
+}
+
+#generateBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px #ff5cc0;
+}
+
+.progress-container {
+  width: 100%;
+  position: relative;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+ 
+}
+
+.progress-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+　position: relative;
+  border: 2px solid #000;
+
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #eeddff, #d6ffe6);
+  transition: width 0.2s ease;
+  border-radius: 10px;
+}
+
+.progress-text {
+  position: absolute;
+  top: -1.5rem;
+  right: 0;
+  font-size: 0.9rem;
+  color: #000;
+  font-weight: bold;
+
+}
+
+/* プロンプト欄 */
+.field-label {
+  margin-bottom: 0.01rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ccc;
+  letter-spacing: 0.5px;
+}
+.prompt-block {
+  display: flex;
+  width: 100%;
+  height: 3rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 10px #222;
+}
+
+.prompt-label {
+  background: #444; /* ← ラベルの背景色 */
+  color: #fff;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+#promptinput {
+  flex: 1;
+  background: #c2ffdf; /* ← プロンプト欄の背景色 */
+  color: #f2409c;
+  border: none;
+  padding: 0 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 2px solid #000;
+}
+
+
+/* 右側：画像表示エリア */
+.preview-area {
+  width: 55vw;
+  height: 95vh;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: #222;
+  box-shadow: 0 0 20px #000;
+  margin-left: auto;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+.preview-area.solo-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+  width: 55vw;
+  margin-left: auto;
+　box-sizing: border-box;
+  background: #222;
+  box-shadow: 0 0 20px #000;
+  overflow: hidden;
+　padding: 1rem;
+}
+.preview-area.solo-mode img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+　transition: transform 0.3s ease;
+  cursor: pointer;
+
+}
+.preview-area img:hover {
+  transform: scale(1.05);
+}
+
+/* モーダル拡大表示 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal img {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+#closeModal {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+.top-controls {
+    display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: -5vh;
+}
+.solo-image {
+  width: auto;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+    transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.solo-image:hover {
+  transform: scale(1.02);
+}
+</style>
+
+<script>
+const generateBtn = document.getElementById('generateBtn');
+const preview = document.getElementById('preview');
+const modal = document.getElementById('modal');
+const modalImage = document.getElementById('modalImage');
+const closeModal = document.getElementById('closeModal');
+const progressText = document.getElementById('progressText');
+
+let imageQueue = [];
+
+function shuffleImages() {
+  const images = Array.from({ length: 164 }, (_, i) => `human${i + 1}.png`);
+  imageQueue = images.sort(() => Math.random() - 0.5);
+}
+
+function getNextImage() {
+  if (imageQueue.length < 1) {
+    shuffleImages();
+  }
+  return imageQueue.splice(0, 1)[0];
+}
+
+function showSoloImage(src) {
+  preview.classList.add('solo-mode');
+  preview.innerHTML = '';
+
+  const img = document.createElement('img');
+  img.src = src;
+  img.classList.add('solo-image');
+  img.addEventListener('click', () => {
+    modalImage.src = img.src;
+    modal.style.display = 'flex';
+  });
+  preview.appendChild(img);
+}
+
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+  });
+
+generateBtn.addEventListener('click', () => {
+  preview.innerHTML = '';
+  modal.style.display = 'none';
+
+  let progress = 0;
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+
+  const interval = setInterval(() => {
+    progress += Math.floor(Math.random() * 10) + 5;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      progressBar.style.width = '100%';
+      progressText.textContent = '100%';
+
+      const src = getNextImage();
+      showSoloImage(src); // ← ここで1枚だけ表示！
+    } else {
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `${progress}%`;
+    }
+  }, 200);
+});
+
+shuffleImages(); // 最初の一周を準備！
+</script>
