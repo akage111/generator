@@ -65,7 +65,7 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* ← 下寄せに変更！ */
+  justify-content: center; 
   padding: 2vh 2vw;
   box-sizing: border-box;
 }
@@ -127,7 +127,7 @@ html, body {
 
 }
 
-/* プロンプト欄 */
+
 .field-label {
   margin-bottom: 0.01rem;
   font-size: 1rem;
@@ -145,7 +145,7 @@ html, body {
 }
 
 .prompt-label {
-  background: #444; /* ← ラベルの背景色 */
+  background: #444; 
   color: #fff;
   padding: 0 1rem;
   display: flex;
@@ -156,7 +156,7 @@ html, body {
 
 #promptinput {
   flex: 1;
-  background: #c2ffdf; /* ← プロンプト欄の背景色 */
+  background: #c2ffdf; 
   color: #f2409c;
   border: none;
   padding: 0 1rem;
@@ -168,7 +168,7 @@ html, body {
 }
 
 
-/* 右側：画像表示エリア */
+
 .preview-area {
   width: 55vw;
   height: 95vh;
@@ -208,7 +208,7 @@ html, body {
   transform: scale(1.05);
 }
 
-/* モーダル拡大表示 */
+
 .modal {
   display: none;
   position: fixed;
@@ -311,7 +311,7 @@ generateBtn.addEventListener('click', () => {
       progressText.textContent = '100%';
 
       const src = getNextImage();
-      showSoloImage(src); // ← ここで1枚だけ表示！
+      showSoloImage(src); 
     } else {
       progressBar.style.width = `${progress}%`;
       progressText.textContent = `${progress}%`;
@@ -319,5 +319,6 @@ generateBtn.addEventListener('click', () => {
   }, 200);
 });
 
-shuffleImages(); // 最初の一周を準備！
+shuffleImages(); 
 </script>
+
